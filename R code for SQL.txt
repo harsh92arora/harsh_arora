@@ -1,0 +1,36 @@
+install.packages("RODBC")
+
+library(RODBC)
+library(data.table) 
+library(sqldf)
+
+#Establishing connection with sql server
+
+conn <- odbcDriverConnect('driver={SQL Server};server=servername;database=databasename;trusted_connection=true') #Enter Server and Database Name 
+
+data <- sqlQuery(conn, "select * from table ") #Wite Sql queries within the double qoutes
+
+
+#Reading multiple .csv files from a folder
+
+folder <- 'path'      # path to folder that holds multiple .csv files
+file_list <- list.files(path=folder, pattern="*.csv") # create list of all .csv files in folder
+file_list
+
+# read in each .csv file in file_list alonf with column filename and rbind them into a data frame called data 
+
+dfList <- lapply(files, function(i) {
+  df <- read.csv(paste(folder, i, sep=''),quote = "", stringsAsFactors = FALSE)
+  df$filename <- i 
+  return(df)
+})
+
+consolidated_data <- do.call("rbind", dfList)
+
+#Executing Sql queries using sqldf package
+
+output <- sqldf("SELECT * from finaldf WHERE filename ='xxxx.csv'")
+
+#Exporting reults
+write.table(finaldf, "path/output.txt", sep="\t")
+
