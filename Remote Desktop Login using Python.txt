@@ -1,0 +1,10 @@
+import pyautogui
+pyautogui.hotkey('Win')
+pyautogui.typewrite("Remote Desktop") 
+pyautogui.hotkey('Enter')
+pyautogui.moveRel(50, 50, duration = 2) 
+pyautogui.typewrite('Desktop Name')
+pyautogui.hotkey('Enter')
+pyautogui.moveRel(50, 50, duration = 2)
+pyautogui.typewrite('Password')
+pyautogui.hotkey('Enter')
